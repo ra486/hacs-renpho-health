@@ -261,6 +261,7 @@ class RenphoApi:
             "heart_rate": measurement.get("heartRate"),
             "height_cm": self._user_info.get("height"),
             "weight_goal_kg": self._user_info.get("weightGoal"),
+            "weight_goal_lbs": round(self._user_info.get("weightGoal", 0) * 2.20462, 1) if self._user_info.get("weightGoal") else None,
             "bodyfat_goal": self._user_info.get("bodyfatGoal"),
             "last_measurement": measurement.get("localCreatedAt"),
             "scale_name": measurement.get("scaleName"),

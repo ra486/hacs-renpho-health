@@ -150,6 +150,13 @@ SENSOR_TYPES = {
         "device_class": None,
         "state_class": None,
     },
+    "weight_goal_lbs": {
+        "name": "Weight Goal (lbs)",
+        "unit": "lbs",
+        "icon": "mdi:target",
+        "device_class": None,
+        "state_class": None,
+    },
     "bodyfat_goal": {
         "name": "Body Fat Goal",
         "unit": PERCENTAGE,
