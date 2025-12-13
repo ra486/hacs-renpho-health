@@ -38,7 +38,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     token_loaded = False
     if cached_data and cached_data.get("token") and cached_data.get("user_id"):
         _LOGGER.info("Loading cached token for Renpho API (avoiding fresh login)")
-        api.set_cached_token(cached_data["token"], cached_data["user_id"])
+        api.set_cached_token(
+            cached_data["token"],
+            cached_data["user_id"],
+            cached_data.get("user_info"),
+        )
         token_loaded = True
 
     # Only do fresh login if no cached token

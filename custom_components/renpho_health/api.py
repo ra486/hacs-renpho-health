@@ -187,10 +187,11 @@ class RenphoApi:
         """Authenticate with Renpho API (sync wrapper)."""
         return self._login()
 
-    def set_cached_token(self, token: str, user_id: int, disable_auto_reauth: bool = True) -> None:
+    def set_cached_token(self, token: str, user_id: int, user_info: dict[str, Any] | None = None, disable_auto_reauth: bool = True) -> None:
         """Set a cached token to avoid re-authentication."""
         self._token = token
         self._user_id = user_id
+        self._user_info = user_info or {}
         self._token_validated = False  # Will be validated on first use
         self._disable_auto_reauth = disable_auto_reauth  # Don't auto re-login with cached tokens
         _LOGGER.debug("Loaded cached token for user %s (auto_reauth=%s)", user_id, not disable_auto_reauth)
@@ -201,6 +202,7 @@ class RenphoApi:
             return {
                 "token": self._token,
                 "user_id": self._user_id,
+                "user_info": self._user_info,
             }
         return None
 
