@@ -1,0 +1,12 @@
+{
+  "domain": "renpho_health",
+  "name": "Renpho Health",
+  "version": "1.1.0",
+  "documentation": "https://github.com/ra486/hacs-renpho-health",
+  "issue_tracker": "https://github.com/ra486/hacs-renpho-health/issues",
+  "dependencies": [],
+  "codeowners": ["@ra486"],
+  "requirements": ["pycryptodome==3.20.0"],
+  "iot_class": "cloud_polling",
+  "config_flow": true
+}

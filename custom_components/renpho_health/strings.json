@@ -1,0 +1,37 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Renpho Health",
+        "description": "Enter your Renpho account credentials.",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to Renpho servers.",
+      "invalid_auth": "Invalid email or password.",
+      "unknown": "An unexpected error occurred."
+    },
+    "abort": {
+      "already_configured": "This account is already configured."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Renpho Health Options",
+        "description": "Configure refresh interval. To avoid mobile app logout, paste a token captured from the app using mitmproxy.",
+        "data": {
+          "refresh_interval": "Refresh interval (seconds)",
+          "token": "Session token (optional - paste from mobile app)"
+        }
+      }
+    },
+    "error": {
+      "invalid_token": "Invalid token format. Token should start with 'eyJ'."
+    }
+  }
+}
