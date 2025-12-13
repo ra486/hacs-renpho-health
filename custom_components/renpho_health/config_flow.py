@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 from typing import Any
 
 import voluptuous as vol
@@ -163,10 +164,13 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             except Exception:
                 _LOGGER.warning("Could not extract user_id from token")
 
-        # Save the new token
+        # Save the new token with source and timestamp
         await store.async_save({
             "token": token,
             "user_id": user_id,
+            "user_info": existing.get("user_info") if existing else {},
+            "token_source": "manual",
+            "token_timestamp": datetime.now().isoformat(),
         })
 
 

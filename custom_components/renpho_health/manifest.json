@@ -1,7 +1,7 @@
 {
   "domain": "renpho_health",
   "name": "Renpho Health",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "documentation": "https://github.com/ra486/hacs-renpho-health",
   "issue_tracker": "https://github.com/ra486/hacs-renpho-health/issues",
   "dependencies": [],

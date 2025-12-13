@@ -48,6 +48,8 @@ class RenphoApi:
         self._user_info: dict[str, Any] = {}
         self._token_validated: bool = False
         self._disable_auto_reauth: bool = False  # When True, don't auto re-login
+        self._token_source: str = "none"  # none, fresh_login, cached, manual
+        self._token_timestamp: str | None = None
 
         # SSL context that doesn't verify certificates
         self._ssl_context = ssl.create_default_context()
@@ -176,6 +178,8 @@ class RenphoApi:
         self._user_id = login_info.get("id")
         self._user_info = login_info
         self._token_validated = True
+        self._token_source = "fresh_login"
+        self._token_timestamp = datetime.now().isoformat()
 
         if not self._token or not self._user_id:
             raise RenphoAuthError("Login response missing token or user ID")
@@ -187,14 +191,16 @@ class RenphoApi:
         """Authenticate with Renpho API (sync wrapper)."""
         return self._login()
 
-    def set_cached_token(self, token: str, user_id: int, user_info: dict[str, Any] | None = None, disable_auto_reauth: bool = True) -> None:
+    def set_cached_token(self, token: str, user_id: int, user_info: dict[str, Any] | None = None, token_source: str = "cached", token_timestamp: str | None = None, disable_auto_reauth: bool = True) -> None:
         """Set a cached token to avoid re-authentication."""
         self._token = token
         self._user_id = user_id
         self._user_info = user_info or {}
         self._token_validated = False  # Will be validated on first use
         self._disable_auto_reauth = disable_auto_reauth  # Don't auto re-login with cached tokens
-        _LOGGER.debug("Loaded cached token for user %s (auto_reauth=%s)", user_id, not disable_auto_reauth)
+        self._token_source = token_source
+        self._token_timestamp = token_timestamp
+        _LOGGER.debug("Loaded cached token for user %s (source=%s, auto_reauth=%s)", user_id, token_source, not disable_auto_reauth)
 
     def get_token_data(self) -> dict[str, Any] | None:
         """Get current token data for caching."""
@@ -203,6 +209,8 @@ class RenphoApi:
                 "token": self._token,
                 "user_id": self._user_id,
                 "user_info": self._user_info,
+                "token_source": self._token_source,
+                "token_timestamp": self._token_timestamp,
             }
         return None
 
@@ -267,7 +275,20 @@ class RenphoApi:
             "bodyfat_goal": self._user_info.get("bodyfatGoal"),
             "last_measurement": measurement.get("localCreatedAt"),
             "scale_name": measurement.get("scaleName"),
+            "token_source": self._token_source,
+            "token_age_hours": self._calculate_token_age(),
         }
+
+    def _calculate_token_age(self) -> float | None:
+        """Calculate token age in hours."""
+        if not self._token_timestamp:
+            return None
+        try:
+            token_time = datetime.fromisoformat(self._token_timestamp)
+            age = datetime.now() - token_time
+            return round(age.total_seconds() / 3600, 1)
+        except (ValueError, TypeError):
+            return None
 
     @property
     def user_id(self) -> int | None:

@@ -42,6 +42,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             cached_data["token"],
             cached_data["user_id"],
             cached_data.get("user_info"),
+            cached_data.get("token_source", "cached"),
+            cached_data.get("token_timestamp"),
         )
         token_loaded = True
 

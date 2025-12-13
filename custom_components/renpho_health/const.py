@@ -164,4 +164,18 @@ SENSOR_TYPES = {
         "device_class": None,
         "state_class": None,
     },
+    "token_source": {
+        "name": "Token Source",
+        "unit": None,
+        "icon": "mdi:key-variant",
+        "device_class": None,
+        "state_class": None,
+    },
+    "token_age_hours": {
+        "name": "Token Age",
+        "unit": "h",
+        "icon": "mdi:clock-outline",
+        "device_class": None,
+        "state_class": None,
+    },
 }
